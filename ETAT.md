@@ -2,7 +2,7 @@
 
 _Dernière mise à jour : 2026-05-20_
 
-## Statut global : 🟢 Palier 2.1 terminé — prêt pour le Palier 2.2
+## Statut global : 🟢 Paliers 2.1 + 2.2 + 2.3 + 2.4 terminés — MVP fonctionnel ✅
 
 ## Palier en cours : Palier 2 — Fonctionnalité cœur (analyse de plante)
 
@@ -15,20 +15,14 @@ _Dernière mise à jour : 2026-05-20_
 - [x] Pages `/login` et `/register` — mobile-first, visuellement vérifiées dans le navigateur
 - [x] Page `/dashboard` — protégée, affiche le prénom + lien vers `/analyse`
 - [x] **2.1 Page `/analyse`** — zone caméra/import, aperçu photo, bouton "Analyser ma plante" (désactivé sans photo)
+- [x] **2.2 Server Action `analyserPlante`** — upload → base64 → Claude API vision → JSON parsé
+- [x] **2.3 Sauvegarde DB** — analyse stockée dans la table `Analysis` avec tous les champs
+- [x] **2.4 Page résultat `/analyse/[id]`** — photo, espèce, score coloré, urgence, problèmes, recommandations
 - [x] Fix bug SQLite : `DATABASE_URL` aligné sur `prisma/dev.db` dans `.env`
+- [x] **Flow complet testé et validé** — photo → analyse Claude → page résultat
 
-## Prochaine action précise (Palier 2.2)
-**Server Action `analyserPlante`** dans `lib/actions/analyse.ts` :
-- Reçoit le `FormData` avec la photo
-- Convertit l'image en base64
-- Appelle Claude API (`claude-sonnet-4-6`) avec vision + prompt JSON
-- Retourne `{ espece, score_sante, etat_general, problemes[], recommandations[], urgence }`
-
-**Prérequis** : ajouter `ANTHROPIC_API_KEY` dans `.env.local` avant de coder l'appel API.
-
-## Points à vérifier à la prochaine session
-1. **Ajouter `ANTHROPIC_API_KEY`** dans `.env.local`
-2. **Câbler la Server Action** dans `handleSubmit` de la page `/analyse`
+## Prochaine action (Palier 3 — Historique)
+Page `/historique` listant toutes les analyses de l'utilisateur connecté, avec miniature photo, espèce et score.
 
 ## Bloquants actuels
-_Aucun — auth OK, DB OK, page /analyse visible et fonctionnelle_
+_Aucun — MVP cœur fonctionnel_
