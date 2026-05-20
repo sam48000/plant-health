@@ -3,6 +3,16 @@
 ## Vision du projet
 Application web mobile-first permettant à des jardiniers amateurs de photographier leurs plantes et d'obtenir une analyse de santé avec des recommandations concrètes. Propulsé par Claude API (vision multimodale). Les utilisateurs ont un compte et accèdent à l'historique de leurs analyses.
 
+## Règles de collaboration (priorité absolue)
+
+1. **Explique tout en français simple, comme à un débutant.** Si ce n'est pas clair, tu ne fais rien.
+2. **Une seule modification à la fois.** Pas de bonus, pas de nettoyage en passant.
+3. **Avant chaque modification importante, annonce ce que tu vas faire et attends ma validation explicite.**
+4. **Après chaque fonctionnalité qui marche : commit Git avec message clair en français.**
+5. **Ne casse jamais ce qui marche déjà.** Si tu touches un fichier existant, vérifie que rien autour n'est cassé.
+6. **Si tu remarques quelque chose à améliorer ailleurs, écris-le dans `TODO.md`. N'y touche pas.**
+7. **Si tu n'es pas sûr de quelque chose, demande. Ne suppose jamais.**
+
 ## Ce que tu dois TOUJOURS faire
 - Écrire les commits en français avec un message clair et descriptif
 - Vérifier que les clés API (ANTHROPIC_API_KEY) ne sont JAMAIS commitées — elles vont dans `.env.local`
