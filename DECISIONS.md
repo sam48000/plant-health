@@ -52,6 +52,13 @@
 
 ---
 
+## 2026-05-20 — DATABASE_URL pointe vers prisma/dev.db (pas ./dev.db)
+**Contexte** : Prisma CLI créait les tables dans `./dev.db` (racine) tandis que `lib/prisma.ts` connectait l'app à `./prisma/dev.db` — deux fichiers distincts, tables introuvables.  
+**Décision** : `DATABASE_URL="file:./prisma/dev.db"` dans `.env`, `lib/prisma.ts` garde `path.join(process.cwd(), "prisma/dev.db")`.  
+**Pourquoi** : Cohérence CLI ↔ runtime, convention Prisma standard (DB dans le dossier `prisma/`).
+
+---
+
 ## 2026-05-20 — Prisma 7 avec adapter better-sqlite3
 **Contexte** : Prisma 7 supprime la connexion directe via `url` dans schema.prisma — nécessite un adapter.  
 **Décision** : `@prisma/adapter-better-sqlite3` pour le dev SQLite local.  

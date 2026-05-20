@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default async function DashboardPage(): Promise<React.JSX.Element> {
   const session = await auth();
@@ -13,13 +14,14 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
         </h1>
         <p className="text-gray-500 text-sm mb-8">Que veux-tu faire aujourd&apos;hui ?</p>
 
-        <div className="bg-white rounded-2xl shadow-md p-6 text-center">
-          <p className="text-4xl mb-3">🌱</p>
-          <p className="text-gray-600 text-sm">
-            L&apos;analyse de plantes arrive bientôt.<br />
-            Le socle est prêt !
-          </p>
-        </div>
+        <Link
+          href="/analyse"
+          className="block bg-green-600 text-white rounded-2xl shadow-md p-6 text-center hover:bg-green-700 active:scale-95 transition-all"
+        >
+          <p className="text-4xl mb-3">📷</p>
+          <p className="font-semibold text-lg">Analyser une plante</p>
+          <p className="text-green-100 text-sm mt-1">Prends une photo et obtiens un diagnostic</p>
+        </Link>
       </div>
     </main>
   );
