@@ -111,6 +111,12 @@ export default async function HistoriquePage(): Promise<React.JSX.Element> {
             Nouvelle analyse
           </Link>
           <Link
+            href="/galerie"
+            className="w-full py-4 rounded-2xl border-2 border-green-600 text-green-700 dark:text-green-400 dark:border-green-500 font-semibold text-base text-center hover:bg-green-50 dark:hover:bg-green-950 active:scale-95 transition-all"
+          >
+            🌿 Voir par espèce
+          </Link>
+          <Link
             href="/dashboard"
             className="text-center text-sm text-green-700 dark:text-green-400 underline"
           >
