@@ -14,14 +14,25 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
         </h1>
         <p className="text-gray-500 text-sm mb-8">Que veux-tu faire aujourd&apos;hui ?</p>
 
-        <Link
-          href="/analyse"
-          className="block bg-green-600 text-white rounded-2xl shadow-md p-6 text-center hover:bg-green-700 active:scale-95 transition-all"
-        >
-          <p className="text-4xl mb-3">📷</p>
-          <p className="font-semibold text-lg">Analyser une plante</p>
-          <p className="text-green-100 text-sm mt-1">Prends une photo et obtiens un diagnostic</p>
-        </Link>
+        <div className="flex flex-col gap-4">
+          <Link
+            href="/analyse"
+            className="block bg-green-600 text-white rounded-2xl shadow-md p-6 text-center hover:bg-green-700 active:scale-95 transition-all"
+          >
+            <p className="text-4xl mb-3">📷</p>
+            <p className="font-semibold text-lg">Analyser une plante</p>
+            <p className="text-green-100 text-sm mt-1">Prends une photo et obtiens un diagnostic</p>
+          </Link>
+
+          <Link
+            href="/historique"
+            className="block bg-white text-green-800 rounded-2xl shadow-md p-6 text-center border border-green-100 hover:bg-green-50 active:scale-95 transition-all"
+          >
+            <p className="text-4xl mb-3">🗂️</p>
+            <p className="font-semibold text-lg">Mes analyses</p>
+            <p className="text-gray-400 text-sm mt-1">Retrouve toutes tes analyses passées</p>
+          </Link>
+        </div>
       </div>
     </main>
   );
