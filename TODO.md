@@ -2,6 +2,11 @@
 
 _Idées à implémenter après que le MVP soit validé. Ne pas y toucher avant le Palier 3 complet._
 
+## Choses à ne pas oublier (technique, Palier 1)
+- [ ] Configurer le nom/email Git global (`git config --global user.name / user.email`) pour les commits
+- [ ] Ajouter `ANTHROPIC_API_KEY` dans `.env.local` avant d'attaquer le Palier 2.2
+- [ ] Tester register + login en vrai (navigateur) pour valider le flow complet
+
 ## Fonctionnalités utilisateur
 - [ ] **Suivi temporel** : analyser la même plante plusieurs fois et voir l'évolution du score de santé
 - [ ] **Galerie par espèce** : regrouper les analyses par type de plante identifiée

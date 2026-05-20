@@ -34,3 +34,26 @@
 **Décision** : NextAuth.js v5 (Auth.js) avec credentials (email/mot de passe) en MVP.  
 **Pourquoi** : Intégration native App Router, facile d'ajouter Google/Apple OAuth en V2.  
 **Alternative rejetée** : Clerk — payant au-delà du free tier, moins de contrôle.
+
+---
+
+## 2026-05-20 — Séparation auth.config.ts / auth.ts pour le proxy Edge
+**Contexte** : Next.js 16 exécute le proxy (ex-middleware) dans l'Edge Runtime, incompatible avec Prisma et Node.js.  
+**Décision** : `auth.config.ts` sans Prisma pour le proxy Edge, `auth.ts` complet avec Prisma pour les Server Actions et composants serveur.  
+**Pourquoi** : Pattern officiel NextAuth v5 pour éviter l'erreur "Node.js module not supported in Edge Runtime".  
+**Alternative rejetée** : Désactiver l'Edge Runtime — perd les avantages de performance du proxy.
+
+---
+
+## 2026-05-20 — Migration de middleware.ts vers proxy.ts (Next.js 16)
+**Contexte** : Next.js 16 déprécie `middleware.ts` au profit de `proxy.ts` avec export nommé `proxy`.  
+**Décision** : Utiliser `proxy.ts` avec `export const proxy = auth`.  
+**Pourquoi** : Next.js 16.x impose cette nouvelle convention — l'ancienne bloque le build.
+
+---
+
+## 2026-05-20 — Prisma 7 avec adapter better-sqlite3
+**Contexte** : Prisma 7 supprime la connexion directe via `url` dans schema.prisma — nécessite un adapter.  
+**Décision** : `@prisma/adapter-better-sqlite3` pour le dev SQLite local.  
+**Pourquoi** : Seul adapter officiel Prisma 7 compatible SQLite sans Turso/LibSQL.  
+**Note** : En production avec PostgreSQL, remplacer par `@prisma/adapter-pg`.
