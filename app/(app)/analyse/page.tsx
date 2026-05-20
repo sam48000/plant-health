@@ -44,35 +44,40 @@ export default function AnalysePage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-green-50 flex flex-col items-center justify-center px-4 gap-6">
+      <main className="min-h-screen bg-green-50 dark:bg-gray-950 flex flex-col items-center justify-center px-4 gap-6">
         {preview && (
           <div className="relative w-32 h-32 rounded-2xl overflow-hidden shadow-md">
             <Image src={preview} alt="Plante en cours d'analyse" fill className="object-cover" unoptimized />
           </div>
         )}
-        <div className="w-12 h-12 rounded-full border-4 border-green-200 border-t-green-600 animate-spin" />
+        <div className="w-12 h-12 rounded-full border-4 border-green-200 dark:border-green-900 border-t-green-600 dark:border-t-green-400 animate-spin" />
         <div className="text-center">
-          <p className="text-lg font-semibold text-green-800">Claude analyse ta plante…</p>
-          <p className="text-sm text-gray-500 mt-1">Identification, score de santé, recommandations</p>
+          <p className="text-lg font-semibold text-green-800 dark:text-green-400">
+            Claude analyse ta plante…
+          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            Identification, score de santé, recommandations
+          </p>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-green-50 flex flex-col items-center px-4 py-10">
-      <h1 className="text-2xl font-bold text-green-800 mb-2">Analyser ma plante</h1>
-      <p className="text-sm text-green-600 mb-8 text-center">
+    <main className="min-h-screen bg-green-50 dark:bg-gray-950 flex flex-col items-center px-4 py-10">
+      <h1 className="text-2xl font-bold text-green-800 dark:text-green-400 mb-2">
+        Analyser ma plante
+      </h1>
+      <p className="text-sm text-green-600 dark:text-green-500 mb-8 text-center">
         Prends une photo de ta plante ou importe-en une depuis ta galerie.
       </p>
 
       <form onSubmit={handleSubmit} className="w-full max-w-sm flex flex-col gap-6">
-        {/* Zone de sélection / aperçu */}
         {!preview ? (
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
-            className="w-full aspect-square rounded-2xl border-2 border-dashed border-green-300 bg-white flex flex-col items-center justify-center gap-3 text-green-500 hover:bg-green-50 transition-colors"
+            className="w-full aspect-square rounded-2xl border-2 border-dashed border-green-300 dark:border-green-700 bg-white dark:bg-gray-900 flex flex-col items-center justify-center gap-3 text-green-500 dark:text-green-500 hover:bg-green-50 dark:hover:bg-gray-800 transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +101,7 @@ export default function AnalysePage() {
             <span className="text-sm font-medium">Prendre une photo ou importer</span>
           </button>
         ) : (
-          <div className="relative w-full aspect-square rounded-2xl overflow-hidden border border-green-200 shadow">
+          <div className="relative w-full aspect-square rounded-2xl overflow-hidden border border-green-200 dark:border-gray-700 shadow">
             <Image
               src={preview}
               alt="Aperçu de la plante"
@@ -107,12 +112,12 @@ export default function AnalysePage() {
             <button
               type="button"
               onClick={handleReset}
-              className="absolute top-2 right-2 bg-white/80 rounded-full p-1.5 shadow hover:bg-white transition-colors"
+              className="absolute top-2 right-2 bg-white/80 dark:bg-gray-900/80 rounded-full p-1.5 shadow hover:bg-white dark:hover:bg-gray-900 transition-colors"
               aria-label="Changer la photo"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5 text-green-700"
+                className="w-5 h-5 text-green-700 dark:text-green-400"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -124,7 +129,6 @@ export default function AnalysePage() {
           </div>
         )}
 
-        {/* Input caché — ouvre caméra sur mobile, galerie sur desktop */}
         <input
           ref={inputRef}
           type="file"
@@ -134,14 +138,12 @@ export default function AnalysePage() {
           onChange={handleFileChange}
         />
 
-        {/* Message d'erreur */}
         {error && (
-          <p className="text-red-600 text-sm text-center bg-red-50 rounded-xl px-4 py-3">
+          <p className="text-red-500 dark:text-red-400 text-sm text-center bg-red-50 dark:bg-red-950 rounded-xl px-4 py-3">
             {error}
           </p>
         )}
 
-        {/* Bouton d'analyse */}
         <button
           type="submit"
           disabled={!file || loading}

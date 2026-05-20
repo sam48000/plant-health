@@ -5,15 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 function scoreColor(score: number): string {
-  if (score >= 70) return "text-green-600";
-  if (score >= 40) return "text-orange-500";
-  return "text-red-600";
+  if (score >= 70) return "text-green-600 dark:text-green-400";
+  if (score >= 40) return "text-orange-500 dark:text-orange-400";
+  return "text-red-600 dark:text-red-400";
 }
 
 function urgenceBadge(urgence: string): string {
-  if (urgence === "faible") return "bg-green-100 text-green-700";
-  if (urgence === "modérée") return "bg-orange-100 text-orange-700";
-  return "bg-red-100 text-red-700";
+  if (urgence === "faible") return "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300";
+  if (urgence === "modérée") return "bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300";
+  return "bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300";
 }
 
 export default async function ResultatPage({
@@ -33,7 +33,7 @@ export default async function ResultatPage({
   const recommandations = JSON.parse(analysis.recommandations ?? "[]") as string[];
 
   return (
-    <main className="min-h-screen bg-green-50 px-4 py-8 pb-20">
+    <main className="min-h-screen bg-green-50 dark:bg-gray-950 px-4 py-8 pb-20">
       <div className="max-w-sm mx-auto flex flex-col gap-5">
         {/* Photo */}
         <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow">
@@ -47,17 +47,23 @@ export default async function ResultatPage({
         </div>
 
         {/* En-tête */}
-        <div className="bg-white rounded-2xl shadow-sm p-5">
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Espèce identifiée</p>
-          <h1 className="text-xl font-bold text-green-800 mb-3">{analysis.espece ?? "Inconnue"}</h1>
-          <p className="text-gray-600 text-sm mb-4">{analysis.etatGeneral ?? ""}</p>
+        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-5">
+          <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-1">
+            Espèce identifiée
+          </p>
+          <h1 className="text-xl font-bold text-green-800 dark:text-green-400 mb-3">
+            {analysis.espece ?? "Inconnue"}
+          </h1>
+          <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
+            {analysis.etatGeneral ?? ""}
+          </p>
 
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs text-gray-400 mb-0.5">Score de santé</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">Score de santé</p>
               <p className={`text-3xl font-bold ${scoreColor(analysis.scoreHealth ?? 0)}`}>
                 {analysis.scoreHealth ?? 0}
-                <span className="text-base font-normal">/100</span>
+                <span className="text-base font-normal text-gray-400 dark:text-gray-500">/100</span>
               </p>
             </div>
             <span
@@ -70,11 +76,13 @@ export default async function ResultatPage({
 
         {/* Problèmes */}
         {problemes.length > 0 && (
-          <div className="bg-white rounded-2xl shadow-sm p-5">
-            <h2 className="font-semibold text-gray-800 mb-3">⚠️ Problèmes détectés</h2>
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-5">
+            <h2 className="font-semibold text-gray-800 dark:text-gray-100 mb-3">
+              ⚠️ Problèmes détectés
+            </h2>
             <ul className="flex flex-col gap-2">
               {problemes.map((p, i) => (
-                <li key={i} className="flex gap-2 text-sm text-gray-600">
+                <li key={i} className="flex gap-2 text-sm text-gray-600 dark:text-gray-300">
                   <span className="text-orange-400 mt-0.5">•</span>
                   {p}
                 </li>
@@ -85,11 +93,13 @@ export default async function ResultatPage({
 
         {/* Recommandations */}
         {recommandations.length > 0 && (
-          <div className="bg-white rounded-2xl shadow-sm p-5">
-            <h2 className="font-semibold text-gray-800 mb-3">✅ Recommandations</h2>
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm p-5">
+            <h2 className="font-semibold text-gray-800 dark:text-gray-100 mb-3">
+              ✅ Recommandations
+            </h2>
             <ul className="flex flex-col gap-2">
               {recommandations.map((r, i) => (
-                <li key={i} className="flex gap-2 text-sm text-gray-600">
+                <li key={i} className="flex gap-2 text-sm text-gray-600 dark:text-gray-300">
                   <span className="text-green-500 mt-0.5">→</span>
                   {r}
                 </li>
@@ -105,7 +115,10 @@ export default async function ResultatPage({
         >
           Analyser une autre plante
         </Link>
-        <Link href="/dashboard" className="text-center text-sm text-green-700 underline">
+        <Link
+          href="/dashboard"
+          className="text-center text-sm text-green-700 dark:text-green-400 underline"
+        >
           Retour au tableau de bord
         </Link>
       </div>
