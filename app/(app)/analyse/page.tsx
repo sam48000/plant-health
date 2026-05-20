@@ -1,13 +1,17 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { analyserPlante } from "@/lib/actions/analyse";
 
 export default function AnalysePage() {
+  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const selected = e.target.files?.[0];
@@ -26,8 +30,16 @@ export default function AnalysePage() {
     e.preventDefault();
     if (!file) return;
     setLoading(true);
-    // Palier 2.2 — Server Action ici
-    setLoading(false);
+    setError(null);
+    const formData = new FormData();
+    formData.append("photo", file);
+    const result = await analyserPlante(formData);
+    if ("error" in result) {
+      setError(result.error);
+      setLoading(false);
+      return;
+    }
+    router.push(`/analyse/${result.id}`);
   }
 
   return (
@@ -104,6 +116,13 @@ export default function AnalysePage() {
           className="hidden"
           onChange={handleFileChange}
         />
+
+        {/* Message d'erreur */}
+        {error && (
+          <p className="text-red-600 text-sm text-center bg-red-50 rounded-xl px-4 py-3">
+            {error}
+          </p>
+        )}
 
         {/* Bouton d'analyse */}
         <button
