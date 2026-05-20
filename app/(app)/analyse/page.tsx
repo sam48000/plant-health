@@ -31,15 +31,20 @@ export default function AnalysePage() {
     if (!file) return;
     setLoading(true);
     setError(null);
-    const formData = new FormData();
-    formData.append("photo", file);
-    const result = await analyserPlante(formData);
-    if ("error" in result) {
-      setError(result.error);
+    try {
+      const formData = new FormData();
+      formData.append("photo", file);
+      const result = await analyserPlante(formData);
+      if ("error" in result) {
+        setError(result.error);
+        return;
+      }
+      router.push(`/analyse/${result.id}`);
+    } catch {
+      setError("Une erreur inattendue s'est produite. Réessaie dans quelques secondes.");
+    } finally {
       setLoading(false);
-      return;
     }
-    router.push(`/analyse/${result.id}`);
   }
 
   if (loading) {

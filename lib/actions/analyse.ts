@@ -99,18 +99,23 @@ export async function analyserPlante(
   }
 
   // Sauvegarde en base
-  const analysis = await prisma.analysis.create({
-    data: {
-      userId: session.user.id,
-      photoUrl,
-      espece: result.espece,
-      scoreHealth: result.score_sante,
-      etatGeneral: result.etat_general,
-      problemes: JSON.stringify(result.problemes),
-      recommandations: JSON.stringify(result.recommandations),
-      urgence: result.urgence,
-    },
-  });
+  let analysis: { id: string };
+  try {
+    analysis = await prisma.analysis.create({
+      data: {
+        userId: session.user.id,
+        photoUrl,
+        espece: result.espece,
+        scoreHealth: result.score_sante,
+        etatGeneral: result.etat_general,
+        problemes: JSON.stringify(result.problemes),
+        recommandations: JSON.stringify(result.recommandations),
+        urgence: result.urgence,
+      },
+    });
+  } catch {
+    return { error: "Impossible de sauvegarder l'analyse. Réessaie." };
+  }
 
   return { id: analysis.id };
 }
