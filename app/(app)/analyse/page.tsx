@@ -42,6 +42,23 @@ export default function AnalysePage() {
     router.push(`/analyse/${result.id}`);
   }
 
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-green-50 flex flex-col items-center justify-center px-4 gap-6">
+        {preview && (
+          <div className="relative w-32 h-32 rounded-2xl overflow-hidden shadow-md">
+            <Image src={preview} alt="Plante en cours d'analyse" fill className="object-cover" unoptimized />
+          </div>
+        )}
+        <div className="w-12 h-12 rounded-full border-4 border-green-200 border-t-green-600 animate-spin" />
+        <div className="text-center">
+          <p className="text-lg font-semibold text-green-800">Claude analyse ta plante…</p>
+          <p className="text-sm text-gray-500 mt-1">Identification, score de santé, recommandations</p>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-green-50 flex flex-col items-center px-4 py-10">
       <h1 className="text-2xl font-bold text-green-800 mb-2">Analyser ma plante</h1>
@@ -130,7 +147,7 @@ export default function AnalysePage() {
           disabled={!file || loading}
           className="w-full py-4 rounded-2xl bg-green-600 text-white font-semibold text-base shadow hover:bg-green-700 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          {loading ? "Analyse en cours…" : "Analyser ma plante 🌿"}
+          Analyser ma plante 🌿
         </button>
       </form>
     </main>
