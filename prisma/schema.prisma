@@ -27,5 +27,6 @@ model Analysis {
   problemes       String   @default("[]")
   recommandations String   @default("[]")
   urgence         String?
+  isPublic        Boolean  @default(false)
   createdAt       DateTime @default(now())
 }

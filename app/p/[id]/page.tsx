@@ -1,9 +1,7 @@
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { redirect, notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import BoutonPartager from "@/components/BoutonPartager";
 
 function scoreColor(score: number): string {
   if (score >= 70) return "text-green-600 dark:text-green-400";
@@ -17,18 +15,15 @@ function urgenceBadge(urgence: string): string {
   return "bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300";
 }
 
-export default async function ResultatPage({
+export default async function PartagePublicPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }): Promise<React.JSX.Element> {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login");
-
   const { id } = await params;
   const analysis = await prisma.analysis.findUnique({ where: { id } });
 
-  if (!analysis || analysis.userId !== session.user.id) notFound();
+  if (!analysis || !analysis.isPublic) notFound();
 
   const problemes = JSON.parse(analysis.problemes ?? "[]") as string[];
   const recommandations = JSON.parse(analysis.recommandations ?? "[]") as string[];
@@ -36,6 +31,12 @@ export default async function ResultatPage({
   return (
     <main className="min-h-screen bg-green-50 dark:bg-gray-950 px-4 py-8 pb-20">
       <div className="max-w-sm mx-auto flex flex-col gap-5">
+        {/* Bandeau "partagé via Plant Health" */}
+        <div className="flex items-center justify-center gap-2 text-sm text-green-700 dark:text-green-400 font-medium">
+          <span>🌿</span>
+          <span>Analyse partagée via Plant Health</span>
+        </div>
+
         {/* Photo */}
         <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow">
           <Image
@@ -109,19 +110,12 @@ export default async function ResultatPage({
           </div>
         )}
 
-        {/* Actions */}
+        {/* CTA */}
         <Link
-          href="/analyse"
+          href="/register"
           className="w-full py-4 rounded-2xl bg-green-600 text-white font-semibold text-base text-center shadow hover:bg-green-700 active:scale-95 transition-all"
         >
-          Analyser une autre plante
-        </Link>
-        <BoutonPartager analysisId={analysis.id} />
-        <Link
-          href="/dashboard"
-          className="text-center text-sm text-green-700 dark:text-green-400 underline"
-        >
-          Retour au tableau de bord
+          Analyser ma propre plante 🌿
         </Link>
       </div>
     </main>
