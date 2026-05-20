@@ -23,6 +23,10 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "default",
     title: "Plant Health",
+    startupImage: "/apple-touch-icon.png",
+  },
+  icons: {
+    apple: "/apple-touch-icon.png",
   },
   formatDetection: { telephone: false },
 };
