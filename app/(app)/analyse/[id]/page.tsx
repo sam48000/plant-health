@@ -4,6 +4,7 @@ import { redirect, notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import BoutonPartager from "@/components/BoutonPartager";
+import BoutonSuivre from "@/components/BoutonSuivre";
 
 function scoreColor(score: number): string {
   if (score >= 70) return "text-green-600 dark:text-green-400";
@@ -26,7 +27,14 @@ export default async function ResultatPage({
   if (!session?.user?.id) redirect("/login");
 
   const { id } = await params;
-  const analysis = await prisma.analysis.findUnique({ where: { id } });
+  const [analysis, plantesExistantes] = await Promise.all([
+    prisma.analysis.findUnique({ where: { id } }),
+    prisma.plant.findMany({
+      where: { userId: session.user.id },
+      select: { id: true, nom: true },
+      orderBy: { createdAt: "desc" },
+    }),
+  ]);
 
   if (!analysis || analysis.userId !== session.user.id) notFound();
 
@@ -117,6 +125,21 @@ export default async function ResultatPage({
           Analyser une autre plante
         </Link>
         <BoutonPartager analysisId={analysis.id} />
+        {!analysis.plantId && (
+          <BoutonSuivre
+            analysisId={analysis.id}
+            especeDetectee={analysis.espece}
+            plantesExistantes={plantesExistantes}
+          />
+        )}
+        {analysis.plantId && (
+          <Link
+            href={`/plantes/${analysis.plantId}`}
+            className="w-full py-4 rounded-2xl border-2 border-green-600 text-green-700 dark:text-green-400 dark:border-green-500 font-semibold text-base text-center hover:bg-green-50 dark:hover:bg-green-950 active:scale-95 transition-all"
+          >
+            📈 Voir l&apos;évolution
+          </Link>
+        )}
         <Link
           href="/dashboard"
           className="text-center text-sm text-green-700 dark:text-green-400 underline"
