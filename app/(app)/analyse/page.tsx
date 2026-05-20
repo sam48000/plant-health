@@ -26,14 +26,42 @@ export default function AnalysePage() {
     if (inputRef.current) inputRef.current.value = "";
   }
 
+  async function compresserImage(original: File): Promise<File> {
+    return new Promise((resolve) => {
+      const img = new window.Image();
+      const url = URL.createObjectURL(original);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        const MAX = 1280;
+        let { width, height } = img;
+        if (width > MAX || height > MAX) {
+          if (width > height) { height = Math.round(height * MAX / width); width = MAX; }
+          else { width = Math.round(width * MAX / height); height = MAX; }
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d")!.drawImage(img, 0, 0, width, height);
+        canvas.toBlob(
+          (blob) => resolve(blob ? new File([blob], original.name, { type: "image/jpeg" }) : original),
+          "image/jpeg",
+          0.82,
+        );
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); resolve(original); };
+      img.src = url;
+    });
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!file) return;
     setLoading(true);
     setError(null);
     try {
+      const compressed = await compresserImage(file);
       const formData = new FormData();
-      formData.append("photo", file);
+      formData.append("photo", compressed);
       const result = await analyserPlante(formData);
       if ("error" in result) {
         setError(result.error);
