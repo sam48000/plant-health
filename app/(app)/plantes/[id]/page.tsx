@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { redirect, notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import PanneauNotifications from "@/components/PanneauNotifications";
 
 function scoreColor(score: number): string {
   if (score >= 70) return "text-green-600 dark:text-green-400";
@@ -190,6 +191,14 @@ export default async function PlantePage({
             </ul>
           </div>
         )}
+
+        {/* Notifications */}
+        <PanneauNotifications
+          plantId={plant.id}
+          plantNom={plant.nom}
+          notifActives={plant.notifActives}
+          intervalDays={plant.intervalDays}
+        />
 
         {/* Actions */}
         <Link

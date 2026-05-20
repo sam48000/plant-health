@@ -8,22 +8,36 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(cuid())
-  email     String     @unique
-  password  String
-  name      String?
-  createdAt DateTime   @default(now())
-  analyses  Analysis[]
-  plantes   Plant[]
+  id                String             @id @default(cuid())
+  email             String             @unique
+  password          String
+  name              String?
+  createdAt         DateTime           @default(now())
+  analyses          Analysis[]
+  plantes           Plant[]
+  pushSubscriptions PushSubscription[]
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
 }
 
 model Plant {
-  id        String     @id @default(cuid())
-  userId    String
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  nom       String
-  createdAt DateTime   @default(now())
-  analyses  Analysis[]
+  id            String     @id @default(cuid())
+  userId        String
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  nom           String
+  notifActives  Boolean    @default(false)
+  intervalDays  Int        @default(7)
+  dernierRappel DateTime?
+  createdAt     DateTime   @default(now())
+  analyses      Analysis[]
 }
 
 model Analysis {
