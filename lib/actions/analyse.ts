@@ -4,8 +4,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { anthropic } from "@/lib/anthropic";
 import { prisma } from "@/lib/prisma";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
+import { put } from "@vercel/blob";
 import { randomUUID } from "crypto";
 
 type AnalyseResult = {
@@ -35,13 +34,24 @@ export async function analyserPlante(
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
-  // Sauvegarde locale dans public/uploads/
-  const ext = file.type.split("/")[1] ?? "jpg";
-  const filename = `${randomUUID()}.${ext}`;
-  const uploadsDir = path.join(process.cwd(), "public", "uploads");
-  await mkdir(uploadsDir, { recursive: true });
-  await writeFile(path.join(uploadsDir, filename), buffer);
-  const photoUrl = `/uploads/${filename}`;
+  // Upload vers Vercel Blob (prod) ou stockage local (dev sans BLOB_READ_WRITE_TOKEN)
+  let photoUrl: string;
+  if (process.env.BLOB_READ_WRITE_TOKEN) {
+    const ext = file.type.split("/")[1] ?? "jpg";
+    const filename = `plants/${randomUUID()}.${ext}`;
+    const blob = await put(filename, buffer, { access: "public", contentType: file.type });
+    photoUrl = blob.url;
+  } else {
+    // Fallback local en développement
+    const { writeFile, mkdir } = await import("fs/promises");
+    const path = await import("path");
+    const ext = file.type.split("/")[1] ?? "jpg";
+    const filename = `${randomUUID()}.${ext}`;
+    const uploadsDir = path.join(process.cwd(), "public", "uploads");
+    await mkdir(uploadsDir, { recursive: true });
+    await writeFile(path.join(uploadsDir, filename), buffer);
+    photoUrl = `/uploads/${filename}`;
+  }
 
   // Appel Claude API avec vision
   const base64 = buffer.toString("base64");
